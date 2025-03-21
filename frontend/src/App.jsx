@@ -5,6 +5,7 @@ import { Header } from './components/layout/Header';
 import { Dashboard } from './pages/Dashboard';
 import Healthmetrics from './pages/Healthmetrics';
 import { HealthReport } from './pages/HealthReport';
+import { LandingPage } from './pages/LandingPage';
 
 // Initialize React Query client
 const queryClient = new QueryClient();
@@ -47,6 +48,12 @@ function AppLayout({ children }) {
 function AppRoutes() {
   return (
     <Routes>
+      {/* Landing page - accessible to everyone */}
+      <Route
+        path="/"
+        element={<LandingPage />}
+      />
+      
       <Route
         path="/sign-in/*"
         element={
@@ -63,6 +70,7 @@ function AppRoutes() {
                   footerActionLink: "text-primary hover:text-primary/90",
                 }
               }}
+              redirectUrl="/dashboard"
             />
           </AuthLayout>
         }
@@ -83,20 +91,12 @@ function AppRoutes() {
                   footerActionLink: "text-primary hover:text-primary/90",
                 }
               }}
+              redirectUrl="/dashboard"
             />
           </AuthLayout>
         }
       />
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Dashboard />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
+      {/* Only the dashboard and other internal routes should be protected */}
       <Route
         path="/dashboard"
         element={
@@ -149,6 +149,17 @@ export default function App() {
           card: "bg-white shadow-md rounded-lg p-6",
           navbar: "bg-white",
           footer: "bg-white",
+        }
+      }}
+      localization={{
+        socialButtonsBlockButton: "Continue with {{provider}}",
+        signIn: {
+          title: "Sign in to Vital Check",
+          subtitle: "to continue to Vital Check",
+        },
+        signUp: {
+          title: "Sign up for Vital Check",
+          subtitle: "to continue to Vital Check",
         }
       }}
     >
